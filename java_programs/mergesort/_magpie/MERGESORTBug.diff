@@ -1,0 +1,11 @@
+--- MERGESORT.java	2024-10-21 11:57:34
++++ MERGESORTBug.java	2024-10-21 11:57:26
+@@ -25,7 +25,7 @@
+     }
+ 
+     public static ArrayList<Integer> mergesort(ArrayList<Integer> arr) {
+-        if (arr.size() <= 1) { // <= 1 in correct version
++        if (arr.size() == 0) { // <= 1 in correct version
+             return arr;
+         } else {
+             int middle = arr.size() / 2;

@@ -1,0 +1,28 @@
+[magpie]
+default_lengthout = 1e5
+
+[software]
+path = java_programs/fixed_rpn_eval
+target_files =
+    RPN_EVAL.java.xml
+fitness = repair
+init_cmd = bash init_bug.sh
+compile_cmd = javac -cp junit-4.10.jar RPN_EVAL.java RPN_EVAL_TEST.java
+test_cmd = java -cp junit-4.10.jar:. org.junit.runner.JUnitCore RPN_EVAL_TEST
+
+[search]
+target_fitness = 0
+max_steps = 400
+max_time = 60
+possible_edits =
+    SrcmlStmtReplacement
+    SrcmlStmtInsertion
+    SrcmlStmtDeletion
+
+[search.gp]
+pop_size = 40
+
+
+
+
+

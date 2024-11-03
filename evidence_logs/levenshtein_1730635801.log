@@ -1,0 +1,945 @@
+2024-11-03 12:10:01,263	[DEBUG]	==== CONFIG ====
+[magpie]
+import = 
+seed = 1398423849222028
+log_dir = _magpie_logs
+work_dir = _magpie_work
+local_original_copy = False
+local_original_name = __original__
+output_encoding = ascii
+edit_retries = 10
+default_timeout = 30
+default_lengthout = 1e5
+diff_method = unified
+trust_local_filesystem = True
+
+[magpie.log]
+color_output = True
+format_info = {counter:<7} {status:<20} {best}{fitness} ({ratio}) [{size}] {cached} {log}
+format_debug = patch({counter})="{patch}"{diffifbest}
+format_fitness = {:.2f}
+format_ratio = {:.2%%}
+format_patchif = 
+	 --> {patch}
+format_diffif = 
+	{diff}
+
+[software]
+path = java_programs/levenshtein
+target_files = 
+	LEVENSHTEIN.java.xml
+software = BasicSoftware
+model_rules = 
+	*.params : ParamFileConfigModel
+	*.xml : SrcmlModel
+	* : LineModel
+model_config = 
+	*.params : [paramconfig]
+	*.xml : [srcml]
+init_cmd = bash init_bug.sh
+init_timeout = 60
+init_lengthout = -1
+setup_cmd = 
+setup_timeout = 
+setup_lengthout = 
+compile_cmd = javac -cp junit-4.10.jar LEVENSHTEIN.java LEVENSHTEIN_TEST.java
+compile_timeout = 
+compile_lengthout = 
+test_cmd = java -cp junit-4.10.jar:. org.junit.runner.JUnitCore LEVENSHTEIN_TEST
+test_timeout = 
+test_lengthout = 
+run_cmd = 
+run_timeout = 
+run_lengthout = 
+batch_timeout = 
+batch_lengthout = 
+batch_bin_fitness_strategy = aggregate
+batch_fitness_strategy = sum
+fitness = repair
+
+[srcml]
+rename = 
+	stmt: break continue decl_stmt do expr_stmt for goto if return switch while
+	number: literal_number
+focus = block stmt operator_comp operator_arith number
+internodes = block
+process_pseudo_blocks = True
+process_literals = True
+process_operators = True
+
+[paramconfig]
+timing = test run
+cli_prefix = --
+cli_glue = =
+cli_boolean = show
+cli_boolean_prefix_true = 
+cli_boolean_prefix_false = no-
+cli_none = hide
+silent_prefix = @
+silent_suffix = $
+
+[search]
+protocol = BasicProtocol
+algorithm = GeneticProgrammingUniformConcat
+possible_edits = 
+	SrcmlStmtReplacement
+	SrcmlStmtInsertion
+	SrcmlStmtDeletion
+warmup = 3
+warmup_strategy = last
+max_steps = 400
+max_time = 60
+target_fitness = 0
+cache_maxsize = 100
+cache_keep = 0.2
+batch_instances = 
+batch_shuffle = True
+batch_bin_shuffle = False
+batch_sample_size = 1
+
+[search.ls]
+delete_prob = 0.5
+max_neighbours = 
+when_trapped = continue
+accept_fail = False
+tabu_length = 10
+
+[search.gp]
+pop_size = 40
+delete_prob = 0.5
+offspring_elitism = 0.1
+offspring_crossover = 0.5
+offspring_mutation = 0.4
+uniform_rate = 0.5
+batch_reset = True
+
+[search.minify]
+do_cleanup = True
+do_rebuild = True
+do_simplify = True
+round_robin_limit = 3
+
+
+2024-11-03 12:10:01,263	[DEBUG]	
+2024-11-03 12:10:01,263	[INFO]	==== SEARCH: GeneticProgrammingUniformConcat ====
+2024-11-03 12:10:01,263	[INFO]	~~~~ WARMUP ~~~~
+2024-11-03 12:10:01,896	[INFO]	WARM    SUCCESS               45.45 (--) [0 edit(s)]  
+2024-11-03 12:10:02,525	[INFO]	WARM    SUCCESS               45.45 (--) [0 edit(s)]  
+2024-11-03 12:10:03,145	[INFO]	WARM    SUCCESS               45.45 (--) [0 edit(s)]  
+2024-11-03 12:10:03,145	[INFO]	REF     SUCCESS               45.45 (--) [0 edit(s)]  
+2024-11-03 12:10:03,145	[INFO]	
+2024-11-03 12:10:03,145	[INFO]	~~~~ START ~~~~
+2024-11-03 12:10:03,146	[INFO]	0-1     SUCCESS              +45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:03,146	[DEBUG]	patch(0-1)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:03,452	[INFO]	0-2     COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:03,452	[DEBUG]	patch(0-2)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:03,754	[INFO]	0-3     COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:03,754	[DEBUG]	patch(0-3)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 10), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:04,047	[INFO]	0-4     COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:04,047	[DEBUG]	patch(0-4)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:04,300	[INFO]	0-5     COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:04,300	[DEBUG]	patch(0-5)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 1), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:04,596	[INFO]	0-6     COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:04,596	[DEBUG]	patch(0-6)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:04,596	[INFO]	0-7     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:04,596	[DEBUG]	patch(0-7)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:05,028	[INFO]	0-8     SUCCESS               45.45 (100.00%) [1 edit(s)]  
+2024-11-03 12:10:05,028	[DEBUG]	patch(0-8)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:05,279	[INFO]	0-9     COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:05,279	[DEBUG]	patch(0-9)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:05,574	[INFO]	0-10    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:05,574	[DEBUG]	patch(0-10)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:06,209	[INFO]	0-11    SUCCESS               45.45 (100.00%) [1 edit(s)]  
+2024-11-03 12:10:06,209	[DEBUG]	patch(0-11)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:06,661	[INFO]	0-12    SUCCESS               100.00 (220.02%) [1 edit(s)]  
+2024-11-03 12:10:06,662	[DEBUG]	patch(0-12)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:06,913	[INFO]	0-13    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:06,913	[DEBUG]	patch(0-13)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:07,161	[INFO]	0-14    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:07,161	[DEBUG]	patch(0-14)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 7), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:07,411	[INFO]	0-15    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:07,411	[DEBUG]	patch(0-15)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:07,662	[INFO]	0-16    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:07,662	[DEBUG]	patch(0-16)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:07,961	[INFO]	0-17    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:07,961	[DEBUG]	patch(0-17)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 7), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:07,961	[INFO]	0-18    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:07,961	[DEBUG]	patch(0-18)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:11,419	[INFO]	0-19    SUCCESS               45.45 (100.00%) [1 edit(s)]  
+2024-11-03 12:10:11,419	[DEBUG]	patch(0-19)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:11,737	[INFO]	0-20    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:11,737	[DEBUG]	patch(0-20)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:11,989	[INFO]	0-21    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:11,989	[DEBUG]	patch(0-21)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:12,244	[INFO]	0-22    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:12,245	[DEBUG]	patch(0-22)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:12,677	[INFO]	0-23    SUCCESS               45.45 (100.00%) [1 edit(s)]  
+2024-11-03 12:10:12,677	[DEBUG]	patch(0-23)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:12,929	[INFO]	0-24    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:12,930	[DEBUG]	patch(0-24)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:13,177	[INFO]	0-25    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:13,177	[DEBUG]	patch(0-25)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:13,483	[INFO]	0-26    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:13,484	[DEBUG]	patch(0-26)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 11), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:13,920	[INFO]	0-27    SUCCESS               45.45 (100.00%) [1 edit(s)]  
+2024-11-03 12:10:13,920	[DEBUG]	patch(0-27)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:14,174	[INFO]	0-28    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:14,174	[DEBUG]	patch(0-28)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 5), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:14,425	[INFO]	0-29    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:14,425	[DEBUG]	patch(0-29)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 0), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:17,856	[INFO]	0-30    SUCCESS               45.45 (100.00%) [1 edit(s)]  
+2024-11-03 12:10:17,856	[DEBUG]	patch(0-30)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:18,106	[INFO]	0-31    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:18,107	[DEBUG]	patch(0-31)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 0), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:18,355	[INFO]	0-32    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:18,356	[DEBUG]	patch(0-32)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:18,666	[INFO]	0-33    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:18,666	[DEBUG]	patch(0-33)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:18,974	[INFO]	0-34    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:18,974	[DEBUG]	patch(0-34)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 9), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:22,477	[INFO]	0-35    SUCCESS               45.45 (100.00%) [1 edit(s)]  
+2024-11-03 12:10:22,477	[DEBUG]	patch(0-35)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:22,728	[INFO]	0-36    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:22,728	[DEBUG]	patch(0-36)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:22,729	[INFO]	0-37    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:22,729	[DEBUG]	patch(0-37)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:23,051	[INFO]	0-38    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:23,051	[DEBUG]	patch(0-38)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 5), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:23,715	[INFO]	0-39    SUCCESS               45.45 (100.00%) [1 edit(s)]  
+2024-11-03 12:10:23,715	[DEBUG]	patch(0-39)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:24,377	[INFO]	0-40    SUCCESS               45.45 (100.00%) [1 edit(s)]  
+2024-11-03 12:10:24,377	[DEBUG]	patch(0-40)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:24,377	[INFO]	REF     SUCCESS               45.45 (--) [0 edit(s)] [cached] 
+2024-11-03 12:10:24,378	[INFO]	1-1     SUCCESS              +45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,378	[DEBUG]	patch(1-1)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:24,379	[INFO]	1-2     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,379	[DEBUG]	patch(1-2)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:24,379	[INFO]	1-3     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,379	[DEBUG]	patch(1-3)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:24,379	[INFO]	1-4     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,379	[DEBUG]	patch(1-4)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:24,379	[INFO]	1-5     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,379	[DEBUG]	patch(1-5)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:24,380	[INFO]	1-6     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,380	[DEBUG]	patch(1-6)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:24,380	[INFO]	1-7     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,380	[DEBUG]	patch(1-7)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:24,380	[INFO]	1-8     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,380	[DEBUG]	patch(1-8)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:24,380	[INFO]	1-9     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:24,380	[DEBUG]	patch(1-9)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:24,381	[INFO]	1-10    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,381	[DEBUG]	patch(1-10)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:24,381	[INFO]	1-11    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,381	[DEBUG]	patch(1-11)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:24,381	[INFO]	1-12    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:24,381	[DEBUG]	patch(1-12)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:24,381	[INFO]	1-13    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,381	[DEBUG]	patch(1-13)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:24,382	[INFO]	1-14    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,382	[DEBUG]	patch(1-14)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:24,382	[INFO]	1-15    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,382	[DEBUG]	patch(1-15)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:24,382	[INFO]	1-16    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,382	[DEBUG]	patch(1-16)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:24,382	[INFO]	1-17    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,382	[DEBUG]	patch(1-17)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:24,383	[INFO]	1-18    SUCCESS               100.00 (220.02%) [1 edit(s)] [cached] 
+2024-11-03 12:10:24,383	[DEBUG]	patch(1-18)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:24,693	[INFO]	1-19    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:24,693	[DEBUG]	patch(1-19)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 5), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:24,694	[INFO]	1-20    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:24,694	[DEBUG]	patch(1-20)=""
+2024-11-03 12:10:24,694	[INFO]	1-21    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:24,694	[DEBUG]	patch(1-21)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:24,694	[INFO]	1-22    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:24,694	[DEBUG]	patch(1-22)=""
+2024-11-03 12:10:24,694	[INFO]	1-23    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:24,694	[DEBUG]	patch(1-23)=""
+2024-11-03 12:10:24,953	[INFO]	1-24    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:24,953	[DEBUG]	patch(1-24)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 6), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:25,209	[INFO]	1-25    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:25,209	[DEBUG]	patch(1-25)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 0), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:25,210	[INFO]	1-26    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:25,210	[DEBUG]	patch(1-26)=""
+2024-11-03 12:10:25,210	[INFO]	1-27    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:25,210	[DEBUG]	patch(1-27)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:25,210	[INFO]	1-28    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:25,210	[DEBUG]	patch(1-28)=""
+2024-11-03 12:10:25,210	[INFO]	1-29    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:25,210	[DEBUG]	patch(1-29)=""
+2024-11-03 12:10:25,210	[INFO]	1-30    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:25,210	[DEBUG]	patch(1-30)=""
+2024-11-03 12:10:25,211	[INFO]	1-31    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:25,211	[DEBUG]	patch(1-31)=""
+2024-11-03 12:10:25,211	[INFO]	1-32    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:25,211	[DEBUG]	patch(1-32)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:25,855	[INFO]	1-33    SUCCESS               45.45 (100.00%) [1 edit(s)]  
+2024-11-03 12:10:25,855	[DEBUG]	patch(1-33)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:26,169	[INFO]	1-34    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:26,169	[DEBUG]	patch(1-34)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 2), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:26,421	[INFO]	1-35    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:26,421	[DEBUG]	patch(1-35)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:26,717	[INFO]	1-36    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:26,718	[DEBUG]	patch(1-36)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 11), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:26,959	[INFO]	1-37    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:26,960	[DEBUG]	patch(1-37)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:26,960	[INFO]	1-38    COMPILE_CODE_ERROR    None (--) [1 edit(s)] [cached] 
+2024-11-03 12:10:26,960	[DEBUG]	patch(1-38)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 11), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:26,960	[INFO]	1-39    COMPILE_CODE_ERROR    None (--) [1 edit(s)] [cached] 
+2024-11-03 12:10:26,960	[DEBUG]	patch(1-39)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 11), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:27,261	[INFO]	1-40    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:27,262	[DEBUG]	patch(1-40)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 6), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:27,262	[INFO]	REF     SUCCESS               45.45 (--) [0 edit(s)] [cached] 
+2024-11-03 12:10:27,263	[INFO]	2-1     SUCCESS              +45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:27,263	[DEBUG]	patch(2-1)=""
+2024-11-03 12:10:27,263	[INFO]	2-2     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,263	[DEBUG]	patch(2-2)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:27,264	[INFO]	2-3     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:27,264	[DEBUG]	patch(2-3)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:27,264	[INFO]	2-4     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,264	[DEBUG]	patch(2-4)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:27,264	[INFO]	2-5     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,264	[DEBUG]	patch(2-5)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:27,902	[INFO]	2-6     SUCCESS               45.45 (100.00%) [2 edit(s)]  
+2024-11-03 12:10:27,902	[DEBUG]	patch(2-6)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:27,903	[INFO]	2-7     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:27,903	[DEBUG]	patch(2-7)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:27,903	[INFO]	2-8     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,903	[DEBUG]	patch(2-8)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:27,903	[INFO]	2-9     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:27,903	[DEBUG]	patch(2-9)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:27,903	[INFO]	2-10    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,903	[DEBUG]	patch(2-10)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:27,903	[INFO]	2-11    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,904	[DEBUG]	patch(2-11)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:27,904	[INFO]	2-12    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,904	[DEBUG]	patch(2-12)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:27,904	[INFO]	2-13    SUCCESS               100.00 (220.02%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,904	[DEBUG]	patch(2-13)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:27,904	[INFO]	2-14    SUCCESS               100.00 (220.02%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,904	[DEBUG]	patch(2-14)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:27,905	[INFO]	2-15    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,905	[DEBUG]	patch(2-15)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:27,905	[INFO]	2-16    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,905	[DEBUG]	patch(2-16)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:27,905	[INFO]	2-17    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,905	[DEBUG]	patch(2-17)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:27,905	[INFO]	2-18    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:27,905	[DEBUG]	patch(2-18)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:28,378	[INFO]	2-19    SUCCESS               45.45 (100.00%) [2 edit(s)]  
+2024-11-03 12:10:28,378	[DEBUG]	patch(2-19)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:28,378	[INFO]	2-20    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:28,378	[DEBUG]	patch(2-20)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:28,379	[INFO]	2-21    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:28,379	[DEBUG]	patch(2-21)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:28,379	[INFO]	2-22    SUCCESS               100.00 (220.02%) [1 edit(s)] [cached] 
+2024-11-03 12:10:28,379	[DEBUG]	patch(2-22)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:28,639	[INFO]	2-23    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:28,639	[DEBUG]	patch(2-23)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:28,952	[INFO]	2-24    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:28,952	[DEBUG]	patch(2-24)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:29,253	[INFO]	2-25    COMPILE_CODE_ERROR    None (--) [3 edit(s)]  
+2024-11-03 12:10:29,253	[DEBUG]	patch(2-25)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:29,689	[INFO]	2-26    SUCCESS               45.45 (100.00%) [2 edit(s)]  
+2024-11-03 12:10:29,689	[DEBUG]	patch(2-26)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:29,690	[INFO]	2-27    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:29,690	[DEBUG]	patch(2-27)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:29,690	[INFO]	2-28    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:29,690	[DEBUG]	patch(2-28)=""
+2024-11-03 12:10:29,690	[INFO]	2-29    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:29,690	[DEBUG]	patch(2-29)=""
+2024-11-03 12:10:29,690	[INFO]	2-30    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:29,690	[DEBUG]	patch(2-30)=""
+2024-11-03 12:10:29,691	[INFO]	2-31    COMPILE_CODE_ERROR    None (--) [3 edit(s)] [cached] 
+2024-11-03 12:10:29,691	[DEBUG]	patch(2-31)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 11), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:29,942	[INFO]	2-32    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:29,943	[DEBUG]	patch(2-32)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:30,580	[INFO]	2-33    SUCCESS               45.45 (100.00%) [2 edit(s)]  
+2024-11-03 12:10:30,580	[DEBUG]	patch(2-33)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:30,580	[INFO]	2-34    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:30,580	[DEBUG]	patch(2-34)=""
+2024-11-03 12:10:30,581	[INFO]	2-35    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:30,581	[DEBUG]	patch(2-35)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:30,581	[INFO]	2-36    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:30,581	[DEBUG]	patch(2-36)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:30,884	[INFO]	2-37    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:30,884	[DEBUG]	patch(2-37)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:30,884	[INFO]	2-38    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:30,884	[DEBUG]	patch(2-38)=""
+2024-11-03 12:10:31,190	[INFO]	2-39    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:31,190	[DEBUG]	patch(2-39)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 6), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:31,489	[INFO]	2-40    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:31,490	[DEBUG]	patch(2-40)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 7), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:31,490	[INFO]	REF     SUCCESS               45.45 (--) [0 edit(s)] [cached] 
+2024-11-03 12:10:31,491	[INFO]	3-1     SUCCESS              +45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:31,491	[DEBUG]	patch(3-1)=""
+2024-11-03 12:10:31,492	[INFO]	3-2     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:31,492	[DEBUG]	patch(3-2)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:31,492	[INFO]	3-3     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:31,492	[DEBUG]	patch(3-3)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:31,492	[INFO]	3-4     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:31,492	[DEBUG]	patch(3-4)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:31,493	[INFO]	3-5     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:31,493	[DEBUG]	patch(3-5)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:31,493	[INFO]	3-6     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:31,493	[DEBUG]	patch(3-6)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:31,493	[INFO]	3-7     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:31,493	[DEBUG]	patch(3-7)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:31,493	[INFO]	3-8     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:31,493	[DEBUG]	patch(3-8)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:32,130	[INFO]	3-9     SUCCESS               45.45 (100.00%) [2 edit(s)]  
+2024-11-03 12:10:32,130	[DEBUG]	patch(3-9)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:32,564	[INFO]	3-10    SUCCESS               45.45 (100.00%) [2 edit(s)]  
+2024-11-03 12:10:32,564	[DEBUG]	patch(3-10)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:32,564	[INFO]	3-11    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:32,564	[DEBUG]	patch(3-11)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:32,565	[INFO]	3-12    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:32,565	[DEBUG]	patch(3-12)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:33,002	[INFO]	3-13    SUCCESS               45.45 (100.00%) [4 edit(s)]  
+2024-11-03 12:10:33,002	[DEBUG]	patch(3-13)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:33,003	[INFO]	3-14    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:33,003	[DEBUG]	patch(3-14)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:33,003	[INFO]	3-15    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:33,003	[DEBUG]	patch(3-15)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:33,003	[INFO]	3-16    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:33,003	[DEBUG]	patch(3-16)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:33,004	[INFO]	3-17    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:33,004	[DEBUG]	patch(3-17)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:33,004	[INFO]	3-18    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:33,004	[DEBUG]	patch(3-18)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:33,004	[INFO]	3-19    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:33,004	[DEBUG]	patch(3-19)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:33,004	[INFO]	3-20    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:33,004	[DEBUG]	patch(3-20)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:33,005	[INFO]	3-21    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:33,005	[DEBUG]	patch(3-21)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:33,005	[INFO]	3-22    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:33,005	[DEBUG]	patch(3-22)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:33,005	[INFO]	3-23    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:33,005	[DEBUG]	patch(3-23)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:33,446	[INFO]	3-24    SUCCESS               45.45 (100.00%) [2 edit(s)]  
+2024-11-03 12:10:33,446	[DEBUG]	patch(3-24)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:33,446	[INFO]	3-25    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:33,446	[DEBUG]	patch(3-25)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:33,447	[INFO]	3-26    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:33,447	[DEBUG]	patch(3-26)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:33,879	[INFO]	3-27    SUCCESS               45.45 (100.00%) [4 edit(s)]  
+2024-11-03 12:10:33,879	[DEBUG]	patch(3-27)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 10), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:34,180	[INFO]	3-28    COMPILE_CODE_ERROR    None (--) [4 edit(s)]  
+2024-11-03 12:10:34,180	[DEBUG]	patch(3-28)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:34,180	[INFO]	3-29    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:34,180	[DEBUG]	patch(3-29)=""
+2024-11-03 12:10:34,180	[INFO]	3-30    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:34,180	[DEBUG]	patch(3-30)=""
+2024-11-03 12:10:34,181	[INFO]	3-31    COMPILE_CODE_ERROR    None (--) [2 edit(s)] [cached] 
+2024-11-03 12:10:34,181	[DEBUG]	patch(3-31)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 5), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:34,434	[INFO]	3-32    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:34,434	[DEBUG]	patch(3-32)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:34,435	[INFO]	3-33    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:34,435	[DEBUG]	patch(3-33)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:34,435	[INFO]	3-34    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:34,435	[DEBUG]	patch(3-34)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:34,687	[INFO]	3-35    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:34,687	[DEBUG]	patch(3-35)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:34,688	[INFO]	3-36    COMPILE_CODE_ERROR    None (--) [4 edit(s)] [cached] 
+2024-11-03 12:10:34,688	[DEBUG]	patch(3-36)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:34,688	[INFO]	3-37    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:34,688	[DEBUG]	patch(3-37)=""
+2024-11-03 12:10:34,688	[INFO]	3-38    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:34,688	[DEBUG]	patch(3-38)=""
+2024-11-03 12:10:34,986	[INFO]	3-39    COMPILE_CODE_ERROR    None (--) [3 edit(s)]  
+2024-11-03 12:10:34,986	[DEBUG]	patch(3-39)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:34,987	[INFO]	3-40    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:34,987	[DEBUG]	patch(3-40)=""
+2024-11-03 12:10:34,987	[INFO]	REF     SUCCESS               45.45 (--) [0 edit(s)] [cached] 
+2024-11-03 12:10:34,989	[INFO]	4-1     SUCCESS              +45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:34,989	[DEBUG]	patch(4-1)=""
+2024-11-03 12:10:34,989	[INFO]	4-2     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:34,989	[DEBUG]	patch(4-2)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:34,990	[INFO]	4-3     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:34,990	[DEBUG]	patch(4-3)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:34,990	[INFO]	4-4     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:34,990	[DEBUG]	patch(4-4)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:34,990	[INFO]	4-5     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:34,990	[DEBUG]	patch(4-5)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:35,411	[INFO]	4-6     SUCCESS               45.45 (100.00%) [2 edit(s)]  
+2024-11-03 12:10:35,411	[DEBUG]	patch(4-6)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:35,412	[INFO]	4-7     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:35,412	[DEBUG]	patch(4-7)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:35,412	[INFO]	4-8     SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:35,412	[DEBUG]	patch(4-8)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:35,413	[INFO]	4-9     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:35,413	[DEBUG]	patch(4-9)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:35,413	[INFO]	4-10    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:35,413	[DEBUG]	patch(4-10)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:35,830	[INFO]	4-11    SUCCESS               45.45 (100.00%) [4 edit(s)]  
+2024-11-03 12:10:35,830	[DEBUG]	patch(4-11)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:35,831	[INFO]	4-12    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:35,831	[DEBUG]	patch(4-12)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:36,270	[INFO]	4-13    SUCCESS               45.45 (100.00%) [5 edit(s)]  
+2024-11-03 12:10:36,270	[DEBUG]	patch(4-13)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:36,271	[INFO]	4-14    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:36,271	[DEBUG]	patch(4-14)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:36,897	[INFO]	4-15    SUCCESS               45.45 (100.00%) [2 edit(s)]  
+2024-11-03 12:10:36,897	[DEBUG]	patch(4-15)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:36,897	[INFO]	4-16    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:36,897	[DEBUG]	patch(4-16)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:36,898	[INFO]	4-17    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:36,898	[DEBUG]	patch(4-17)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:36,898	[INFO]	4-18    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:36,898	[DEBUG]	patch(4-18)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:36,898	[INFO]	4-19    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:36,898	[DEBUG]	patch(4-19)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:36,899	[INFO]	4-20    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:36,899	[DEBUG]	patch(4-20)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:36,899	[INFO]	4-21    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:36,899	[DEBUG]	patch(4-21)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:36,899	[INFO]	4-22    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:36,899	[DEBUG]	patch(4-22)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:36,899	[INFO]	4-23    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:36,899	[DEBUG]	patch(4-23)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:36,900	[INFO]	4-24    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:36,900	[DEBUG]	patch(4-24)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:36,900	[INFO]	4-25    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:36,900	[DEBUG]	patch(4-25)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:36,900	[INFO]	4-26    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:36,900	[DEBUG]	patch(4-26)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:36,900	[INFO]	4-27    SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:36,900	[DEBUG]	patch(4-27)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:37,153	[INFO]	4-28    COMPILE_CODE_ERROR    None (--) [4 edit(s)]  
+2024-11-03 12:10:37,153	[DEBUG]	patch(4-28)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 1), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:37,154	[INFO]	4-29    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:37,154	[DEBUG]	patch(4-29)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:37,448	[INFO]	4-30    COMPILE_CODE_ERROR    None (--) [5 edit(s)]  
+2024-11-03 12:10:37,448	[DEBUG]	patch(4-30)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 10), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 6), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:37,448	[INFO]	4-31    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:37,448	[DEBUG]	patch(4-31)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:37,787	[INFO]	4-32    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:37,788	[DEBUG]	patch(4-32)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 5), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:38,084	[INFO]	4-33    COMPILE_CODE_ERROR    None (--) [5 edit(s)]  
+2024-11-03 12:10:38,084	[DEBUG]	patch(4-33)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 11), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:38,084	[INFO]	4-34    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:38,085	[DEBUG]	patch(4-34)=""
+2024-11-03 12:10:38,085	[INFO]	4-35    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:38,085	[DEBUG]	patch(4-35)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:38,085	[INFO]	4-36    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:38,085	[DEBUG]	patch(4-36)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:38,337	[INFO]	4-37    COMPILE_CODE_ERROR    None (--) [3 edit(s)]  
+2024-11-03 12:10:38,337	[DEBUG]	patch(4-37)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:38,337	[INFO]	4-38    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:38,337	[DEBUG]	patch(4-38)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:38,338	[INFO]	4-39    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:38,338	[DEBUG]	patch(4-39)=""
+2024-11-03 12:10:38,338	[INFO]	4-40    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:38,338	[DEBUG]	patch(4-40)=""
+2024-11-03 12:10:38,338	[INFO]	REF     SUCCESS               45.45 (--) [0 edit(s)] [cached] 
+2024-11-03 12:10:38,340	[INFO]	5-1     SUCCESS              +45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:38,340	[DEBUG]	patch(5-1)=""
+2024-11-03 12:10:38,341	[INFO]	5-2     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:38,341	[DEBUG]	patch(5-2)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:38,341	[INFO]	5-3     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:38,341	[DEBUG]	patch(5-3)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:38,341	[INFO]	5-4     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:38,341	[DEBUG]	patch(5-4)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:38,341	[INFO]	5-5     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:38,341	[DEBUG]	patch(5-5)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:38,342	[INFO]	5-6     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:38,342	[DEBUG]	patch(5-6)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:38,342	[INFO]	5-7     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:38,342	[DEBUG]	patch(5-7)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:38,342	[INFO]	5-8     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:38,342	[DEBUG]	patch(5-8)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:38,343	[INFO]	5-9     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:38,343	[DEBUG]	patch(5-9)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:38,785	[INFO]	5-10    SUCCESS               45.45 (100.00%) [3 edit(s)]  
+2024-11-03 12:10:38,785	[DEBUG]	patch(5-10)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:39,206	[INFO]	5-11    SUCCESS               45.45 (100.00%) [3 edit(s)]  
+2024-11-03 12:10:39,206	[DEBUG]	patch(5-11)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:39,207	[INFO]	5-12    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:39,207	[DEBUG]	patch(5-12)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:39,641	[INFO]	5-13    SUCCESS               45.45 (100.00%) [2 edit(s)]  
+2024-11-03 12:10:39,641	[DEBUG]	patch(5-13)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:39,641	[INFO]	5-14    SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:39,641	[DEBUG]	patch(5-14)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:39,642	[INFO]	5-15    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:39,642	[DEBUG]	patch(5-15)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:39,642	[INFO]	5-16    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:39,642	[DEBUG]	patch(5-16)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:39,642	[INFO]	5-17    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:39,642	[DEBUG]	patch(5-17)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:40,070	[INFO]	5-18    SUCCESS               45.45 (100.00%) [7 edit(s)]  
+2024-11-03 12:10:40,071	[DEBUG]	patch(5-18)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:40,071	[INFO]	5-19    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:40,071	[DEBUG]	patch(5-19)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:40,071	[INFO]	5-20    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:40,071	[DEBUG]	patch(5-20)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:40,071	[INFO]	5-21    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:40,071	[DEBUG]	patch(5-21)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:40,072	[INFO]	5-22    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:40,072	[DEBUG]	patch(5-22)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:40,072	[INFO]	5-23    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:40,072	[DEBUG]	patch(5-23)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:40,072	[INFO]	5-24    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:40,072	[DEBUG]	patch(5-24)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:40,072	[INFO]	5-25    COMPILE_CODE_ERROR    None (--) [1 edit(s)] [cached] 
+2024-11-03 12:10:40,073	[DEBUG]	patch(5-25)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:40,073	[INFO]	5-26    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:40,073	[DEBUG]	patch(5-26)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:40,706	[INFO]	5-27    SUCCESS               45.45 (100.00%) [4 edit(s)]  
+2024-11-03 12:10:40,707	[DEBUG]	patch(5-27)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:40,707	[INFO]	5-28    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:40,707	[DEBUG]	patch(5-28)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:40,707	[INFO]	5-29    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:40,707	[DEBUG]	patch(5-29)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:40,708	[INFO]	5-30    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:40,708	[DEBUG]	patch(5-30)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:41,006	[INFO]	5-31    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:41,006	[DEBUG]	patch(5-31)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:41,006	[INFO]	5-32    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:41,006	[DEBUG]	patch(5-32)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:41,308	[INFO]	5-33    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:41,308	[DEBUG]	patch(5-33)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 10), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:41,308	[INFO]	5-34    COMPILE_CODE_ERROR    None (--) [5 edit(s)] [cached] 
+2024-11-03 12:10:41,308	[DEBUG]	patch(5-34)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:41,309	[INFO]	5-35    COMPILE_CODE_ERROR    None (--) [3 edit(s)] [cached] 
+2024-11-03 12:10:41,309	[DEBUG]	patch(5-35)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:41,309	[INFO]	5-36    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:41,309	[DEBUG]	patch(5-36)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:41,309	[INFO]	5-37    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:41,309	[DEBUG]	patch(5-37)=""
+2024-11-03 12:10:41,310	[INFO]	5-38    SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:41,310	[DEBUG]	patch(5-38)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:41,605	[INFO]	5-39    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:41,605	[DEBUG]	patch(5-39)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 10), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:41,605	[INFO]	5-40    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:41,605	[DEBUG]	patch(5-40)=""
+2024-11-03 12:10:41,605	[INFO]	REF     SUCCESS               45.45 (--) [0 edit(s)] [cached] 
+2024-11-03 12:10:41,608	[INFO]	6-1     SUCCESS              +45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:41,608	[DEBUG]	patch(6-1)=""
+2024-11-03 12:10:41,608	[INFO]	6-2     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:41,608	[DEBUG]	patch(6-2)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:41,608	[INFO]	6-3     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:41,608	[DEBUG]	patch(6-3)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:41,608	[INFO]	6-4     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:41,609	[DEBUG]	patch(6-4)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:41,609	[INFO]	6-5     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:41,609	[DEBUG]	patch(6-5)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:41,609	[INFO]	6-6     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:41,609	[DEBUG]	patch(6-6)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:41,609	[INFO]	6-7     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:41,609	[DEBUG]	patch(6-7)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:41,610	[INFO]	6-8     SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:41,610	[DEBUG]	patch(6-8)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:41,610	[INFO]	6-9     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:41,610	[DEBUG]	patch(6-9)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:41,611	[INFO]	6-10    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:41,611	[DEBUG]	patch(6-10)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:41,611	[INFO]	6-11    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:41,611	[DEBUG]	patch(6-11)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:42,047	[INFO]	6-12    SUCCESS               45.45 (100.00%) [3 edit(s)]  
+2024-11-03 12:10:42,047	[DEBUG]	patch(6-12)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:42,480	[INFO]	6-13    SUCCESS               45.45 (100.00%) [3 edit(s)]  
+2024-11-03 12:10:42,480	[DEBUG]	patch(6-13)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:42,480	[INFO]	6-14    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:42,480	[DEBUG]	patch(6-14)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:42,481	[INFO]	6-15    SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:42,481	[DEBUG]	patch(6-15)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:42,481	[INFO]	6-16    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:42,481	[DEBUG]	patch(6-16)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:42,481	[INFO]	6-17    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:42,481	[DEBUG]	patch(6-17)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:42,481	[INFO]	6-18    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:42,481	[DEBUG]	patch(6-18)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:42,482	[INFO]	6-19    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:42,482	[DEBUG]	patch(6-19)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:42,482	[INFO]	6-20    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:42,482	[DEBUG]	patch(6-20)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:42,482	[INFO]	6-21    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:42,482	[DEBUG]	patch(6-21)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:43,104	[INFO]	6-22    SUCCESS               45.45 (100.00%) [3 edit(s)]  
+2024-11-03 12:10:43,104	[DEBUG]	patch(6-22)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:43,104	[INFO]	6-23    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:43,105	[DEBUG]	patch(6-23)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:43,105	[INFO]	6-24    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:43,105	[DEBUG]	patch(6-24)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:43,105	[INFO]	6-25    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:43,105	[DEBUG]	patch(6-25)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:43,105	[INFO]	6-26    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:43,105	[DEBUG]	patch(6-26)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:43,105	[INFO]	6-27    SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:43,105	[DEBUG]	patch(6-27)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:43,106	[INFO]	6-28    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:43,106	[DEBUG]	patch(6-28)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:43,106	[INFO]	6-29    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:43,106	[DEBUG]	patch(6-29)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:43,405	[INFO]	6-30    COMPILE_CODE_ERROR    None (--) [3 edit(s)]  
+2024-11-03 12:10:43,406	[DEBUG]	patch(6-30)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:43,406	[INFO]	6-31    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:43,406	[DEBUG]	patch(6-31)=""
+2024-11-03 12:10:43,647	[INFO]	6-32    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:43,647	[DEBUG]	patch(6-32)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:43,647	[INFO]	6-33    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:43,647	[DEBUG]	patch(6-33)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:43,948	[INFO]	6-34    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:43,948	[DEBUG]	patch(6-34)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,239	[INFO]	6-35    COMPILE_CODE_ERROR    None (--) [8 edit(s)]  
+2024-11-03 12:10:44,239	[DEBUG]	patch(6-35)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:44,239	[INFO]	6-36    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:44,239	[DEBUG]	patch(6-36)=""
+2024-11-03 12:10:44,240	[INFO]	6-37    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:44,240	[DEBUG]	patch(6-37)=""
+2024-11-03 12:10:44,240	[INFO]	6-38    SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:44,240	[DEBUG]	patch(6-38)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:44,240	[INFO]	6-39    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:44,240	[DEBUG]	patch(6-39)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:44,241	[INFO]	6-40    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:44,241	[DEBUG]	patch(6-40)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:44,241	[INFO]	REF     SUCCESS               45.45 (--) [0 edit(s)] [cached] 
+2024-11-03 12:10:44,243	[INFO]	7-1     SUCCESS              +45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:44,243	[DEBUG]	patch(7-1)=""
+2024-11-03 12:10:44,243	[INFO]	7-2     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:44,244	[DEBUG]	patch(7-2)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,244	[INFO]	7-3     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:44,244	[DEBUG]	patch(7-3)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:44,244	[INFO]	7-4     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:44,244	[DEBUG]	patch(7-4)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,244	[INFO]	7-5     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:44,244	[DEBUG]	patch(7-5)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:44,680	[INFO]	7-6     SUCCESS               45.45 (100.00%) [6 edit(s)]  
+2024-11-03 12:10:44,680	[DEBUG]	patch(7-6)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,680	[INFO]	7-7     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:44,680	[DEBUG]	patch(7-7)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,681	[INFO]	7-8     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:44,681	[DEBUG]	patch(7-8)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,681	[INFO]	7-9     SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:44,681	[DEBUG]	patch(7-9)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,681	[INFO]	7-10    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:44,681	[DEBUG]	patch(7-10)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:44,682	[INFO]	7-11    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:44,682	[DEBUG]	patch(7-11)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:44,682	[INFO]	7-12    SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:44,682	[DEBUG]	patch(7-12)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,682	[INFO]	7-13    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:44,682	[DEBUG]	patch(7-13)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,683	[INFO]	7-14    SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:44,683	[DEBUG]	patch(7-14)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:44,683	[INFO]	7-15    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:44,683	[DEBUG]	patch(7-15)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:44,683	[INFO]	7-16    SUCCESS               45.45 (100.00%) [6 edit(s)] [cached] 
+2024-11-03 12:10:44,683	[DEBUG]	patch(7-16)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:44,684	[INFO]	7-17    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:44,684	[DEBUG]	patch(7-17)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:44,684	[INFO]	7-18    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:44,684	[DEBUG]	patch(7-18)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:44,684	[INFO]	7-19    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:44,684	[DEBUG]	patch(7-19)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:44,685	[INFO]	7-20    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:44,685	[DEBUG]	patch(7-20)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,685	[INFO]	7-21    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:44,685	[DEBUG]	patch(7-21)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,685	[INFO]	7-22    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:44,685	[DEBUG]	patch(7-22)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:44,686	[INFO]	7-23    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:44,686	[DEBUG]	patch(7-23)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:44,686	[INFO]	7-24    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:44,686	[DEBUG]	patch(7-24)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:44,686	[INFO]	7-25    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:44,686	[DEBUG]	patch(7-25)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:44,687	[INFO]	7-26    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:44,687	[DEBUG]	patch(7-26)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,687	[INFO]	7-27    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:44,687	[DEBUG]	patch(7-27)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,687	[INFO]	7-28    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:44,687	[DEBUG]	patch(7-28)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:44,688	[INFO]	7-29    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:44,688	[DEBUG]	patch(7-29)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:44,937	[INFO]	7-30    COMPILE_CODE_ERROR    None (--) [4 edit(s)]  
+2024-11-03 12:10:44,938	[DEBUG]	patch(7-30)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:45,236	[INFO]	7-31    COMPILE_CODE_ERROR    None (--) [3 edit(s)]  
+2024-11-03 12:10:45,236	[DEBUG]	patch(7-31)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 2), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:45,488	[INFO]	7-32    COMPILE_CODE_ERROR    None (--) [5 edit(s)]  
+2024-11-03 12:10:45,489	[DEBUG]	patch(7-32)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:45,489	[INFO]	7-33    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:45,489	[DEBUG]	patch(7-33)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:45,489	[INFO]	7-34    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:45,489	[DEBUG]	patch(7-34)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:45,490	[INFO]	7-35    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:45,490	[DEBUG]	patch(7-35)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:45,787	[INFO]	7-36    COMPILE_CODE_ERROR    None (--) [5 edit(s)]  
+2024-11-03 12:10:45,787	[DEBUG]	patch(7-36)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:45,787	[INFO]	7-37    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:45,787	[DEBUG]	patch(7-37)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:46,027	[INFO]	7-38    COMPILE_CODE_ERROR    None (--) [4 edit(s)]  
+2024-11-03 12:10:46,027	[DEBUG]	patch(7-38)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 5), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:46,027	[INFO]	7-39    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:46,027	[DEBUG]	patch(7-39)=""
+2024-11-03 12:10:46,028	[INFO]	7-40    SUCCESS               45.45 (100.00%) [5 edit(s)] [cached] 
+2024-11-03 12:10:46,028	[DEBUG]	patch(7-40)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:46,028	[INFO]	REF     SUCCESS               45.45 (--) [0 edit(s)] [cached] 
+2024-11-03 12:10:46,031	[INFO]	8-1     SUCCESS              +45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:46,031	[DEBUG]	patch(8-1)=""
+2024-11-03 12:10:46,031	[INFO]	8-2     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:46,031	[DEBUG]	patch(8-2)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:46,031	[INFO]	8-3     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:46,031	[DEBUG]	patch(8-3)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:46,032	[INFO]	8-4     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:46,032	[DEBUG]	patch(8-4)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:46,032	[INFO]	8-5     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:46,032	[DEBUG]	patch(8-5)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:46,032	[INFO]	8-6     SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:46,032	[DEBUG]	patch(8-6)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:46,033	[INFO]	8-7     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:46,033	[DEBUG]	patch(8-7)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:46,033	[INFO]	8-8     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:46,033	[DEBUG]	patch(8-8)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:46,468	[INFO]	8-9     SUCCESS               45.45 (100.00%) [4 edit(s)]  
+2024-11-03 12:10:46,468	[DEBUG]	patch(8-9)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:46,468	[INFO]	8-10    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:46,469	[DEBUG]	patch(8-10)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:46,469	[INFO]	8-11    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:46,469	[DEBUG]	patch(8-11)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:46,932	[INFO]	8-12    SUCCESS               45.45 (100.00%) [3 edit(s)]  
+2024-11-03 12:10:46,932	[DEBUG]	patch(8-12)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:46,933	[INFO]	8-13    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:46,933	[DEBUG]	patch(8-13)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:46,933	[INFO]	8-14    SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:46,933	[DEBUG]	patch(8-14)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:46,934	[INFO]	8-15    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:46,934	[DEBUG]	patch(8-15)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:46,934	[INFO]	8-16    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:46,934	[DEBUG]	patch(8-16)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:46,935	[INFO]	8-17    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:46,935	[DEBUG]	patch(8-17)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:46,935	[INFO]	8-18    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:46,935	[DEBUG]	patch(8-18)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:46,935	[INFO]	8-19    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:46,935	[DEBUG]	patch(8-19)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:46,935	[INFO]	8-20    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:46,935	[DEBUG]	patch(8-20)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:46,936	[INFO]	8-21    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:46,936	[DEBUG]	patch(8-21)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:46,936	[INFO]	8-22    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:46,936	[DEBUG]	patch(8-22)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:46,936	[INFO]	8-23    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:46,936	[DEBUG]	patch(8-23)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:46,937	[INFO]	8-24    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:46,937	[DEBUG]	patch(8-24)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:47,231	[INFO]	8-25    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:10:47,232	[DEBUG]	patch(8-25)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:47,232	[INFO]	8-26    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:47,232	[DEBUG]	patch(8-26)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:47,472	[INFO]	8-27    COMPILE_CODE_ERROR    None (--) [3 edit(s)]  
+2024-11-03 12:10:47,472	[DEBUG]	patch(8-27)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:47,473	[INFO]	8-28    SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:47,473	[DEBUG]	patch(8-28)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:47,893	[INFO]	8-29    SUCCESS               45.45 (100.00%) [7 edit(s)]  
+2024-11-03 12:10:47,893	[DEBUG]	patch(8-29)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:48,190	[INFO]	8-30    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:48,190	[DEBUG]	patch(8-30)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 5), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:48,191	[INFO]	8-31    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:48,191	[DEBUG]	patch(8-31)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:48,639	[INFO]	8-32    SUCCESS               100.00 (220.02%) [4 edit(s)]  
+2024-11-03 12:10:48,640	[DEBUG]	patch(8-32)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:48,876	[INFO]	8-33    COMPILE_CODE_ERROR    None (--) [3 edit(s)]  
+2024-11-03 12:10:48,876	[DEBUG]	patch(8-33)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 2), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:48,876	[INFO]	8-34    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:48,876	[DEBUG]	patch(8-34)=""
+2024-11-03 12:10:48,876	[INFO]	8-35    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:48,876	[DEBUG]	patch(8-35)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:48,877	[INFO]	8-36    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:48,877	[DEBUG]	patch(8-36)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:48,877	[INFO]	8-37    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:48,877	[DEBUG]	patch(8-37)=""
+2024-11-03 12:10:48,877	[INFO]	8-38    SUCCESS               45.45 (100.00%) [5 edit(s)] [cached] 
+2024-11-03 12:10:48,877	[DEBUG]	patch(8-38)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:49,128	[INFO]	8-39    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:49,128	[DEBUG]	patch(8-39)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:49,129	[INFO]	8-40    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:49,129	[DEBUG]	patch(8-40)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:49,129	[INFO]	REF     SUCCESS               45.45 (--) [0 edit(s)] [cached] 
+2024-11-03 12:10:49,132	[INFO]	9-1     SUCCESS              +45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:49,132	[DEBUG]	patch(9-1)=""
+2024-11-03 12:10:49,132	[INFO]	9-2     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:49,132	[DEBUG]	patch(9-2)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:49,133	[INFO]	9-3     SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:49,133	[DEBUG]	patch(9-3)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:49,133	[INFO]	9-4     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:49,133	[DEBUG]	patch(9-4)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:49,133	[INFO]	9-5     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:49,133	[DEBUG]	patch(9-5)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:49,134	[INFO]	9-6     SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:49,134	[DEBUG]	patch(9-6)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:49,569	[INFO]	9-7     SUCCESS               45.45 (100.00%) [4 edit(s)]  
+2024-11-03 12:10:49,570	[DEBUG]	patch(9-7)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:49,570	[INFO]	9-8     SUCCESS               45.45 (100.00%) [6 edit(s)] [cached] 
+2024-11-03 12:10:49,570	[DEBUG]	patch(9-8)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:49,570	[INFO]	9-9     SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:49,570	[DEBUG]	patch(9-9)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:50,002	[INFO]	9-10    SUCCESS               45.45 (100.00%) [6 edit(s)]  
+2024-11-03 12:10:50,002	[DEBUG]	patch(9-10)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:50,002	[INFO]	9-11    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:50,002	[DEBUG]	patch(9-11)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:50,436	[INFO]	9-12    SUCCESS               45.45 (100.00%) [4 edit(s)]  
+2024-11-03 12:10:50,436	[DEBUG]	patch(9-12)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:50,437	[INFO]	9-13    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:50,437	[DEBUG]	patch(9-13)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:50,437	[INFO]	9-14    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:50,437	[DEBUG]	patch(9-14)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:50,437	[INFO]	9-15    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:50,437	[DEBUG]	patch(9-15)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:50,872	[INFO]	9-16    SUCCESS               45.45 (100.00%) [3 edit(s)]  
+2024-11-03 12:10:50,872	[DEBUG]	patch(9-16)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:50,873	[INFO]	9-17    SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:50,873	[DEBUG]	patch(9-17)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:50,873	[INFO]	9-18    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:50,873	[DEBUG]	patch(9-18)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:50,874	[INFO]	9-19    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:50,874	[DEBUG]	patch(9-19)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:50,874	[INFO]	9-20    SUCCESS               45.45 (100.00%) [5 edit(s)] [cached] 
+2024-11-03 12:10:50,874	[DEBUG]	patch(9-20)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:50,875	[INFO]	9-21    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:50,875	[DEBUG]	patch(9-21)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:50,875	[INFO]	9-22    SUCCESS               45.45 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:10:50,875	[DEBUG]	patch(9-22)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:50,875	[INFO]	9-23    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:50,875	[DEBUG]	patch(9-23)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:51,298	[INFO]	9-24    SUCCESS               45.45 (100.00%) [2 edit(s)]  
+2024-11-03 12:10:51,298	[DEBUG]	patch(9-24)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:51,299	[INFO]	9-25    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:51,299	[DEBUG]	patch(9-25)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4))"
+2024-11-03 12:10:51,598	[INFO]	9-26    COMPILE_CODE_ERROR    None (--) [4 edit(s)]  
+2024-11-03 12:10:51,598	[DEBUG]	patch(9-26)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:51,599	[INFO]	9-27    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:51,599	[DEBUG]	patch(9-27)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:51,599	[INFO]	9-28    SUCCESS               45.45 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:10:51,599	[DEBUG]	patch(9-28)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:51,898	[INFO]	9-29    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:51,898	[DEBUG]	patch(9-29)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 0), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:52,318	[INFO]	9-30    SUCCESS               45.45 (100.00%) [6 edit(s)]  
+2024-11-03 12:10:52,318	[DEBUG]	patch(9-30)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:52,559	[INFO]	9-31    COMPILE_CODE_ERROR    None (--) [5 edit(s)]  
+2024-11-03 12:10:52,559	[DEBUG]	patch(9-31)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 7), ('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:52,869	[INFO]	9-32    COMPILE_CODE_ERROR    None (--) [4 edit(s)]  
+2024-11-03 12:10:52,869	[DEBUG]	patch(9-32)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 8), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:52,870	[INFO]	9-33    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:52,870	[DEBUG]	patch(9-33)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:52,870	[INFO]	9-34    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:52,870	[DEBUG]	patch(9-34)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:52,870	[INFO]	9-35    SUCCESS               45.45 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:10:52,870	[DEBUG]	patch(9-35)=""
+2024-11-03 12:10:53,179	[INFO]	9-36    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:10:53,179	[DEBUG]	patch(9-36)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 2), ('LEVENSHTEIN.java.xml', 'stmt', 0)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 11), ('LEVENSHTEIN.java.xml', 'stmt', 3))"
+2024-11-03 12:10:53,179	[INFO]	9-37    SUCCESS               45.45 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:10:53,179	[DEBUG]	patch(9-37)="SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 3), ('LEVENSHTEIN.java.xml', 'stmt', 4)) | SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:53,179	[INFO]	9-38    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:53,179	[DEBUG]	patch(9-38)="SrcmlStmtDeletion(('LEVENSHTEIN.java.xml', 'stmt', 2))"
+2024-11-03 12:10:53,180	[INFO]	9-39    SUCCESS               45.45 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:10:53,180	[DEBUG]	patch(9-39)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 1), ('LEVENSHTEIN.java.xml', 'stmt', 1))"
+2024-11-03 12:10:53,485	[INFO]	9-40    COMPILE_CODE_ERROR    None (--) [5 edit(s)]  
+2024-11-03 12:10:53,486	[DEBUG]	patch(9-40)="SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtInsertion(('LEVENSHTEIN.java.xml', '_inter_block', 3), ('LEVENSHTEIN.java.xml', 'stmt', 2)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 3)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 1)) | SrcmlStmtReplacement(('LEVENSHTEIN.java.xml', 'stmt', 4), ('LEVENSHTEIN.java.xml', 'stmt', 0))"
+2024-11-03 12:10:53,486	[INFO]	~~~~ END ~~~~
+2024-11-03 12:10:53,486	[INFO]	
+2024-11-03 12:10:53,486	[INFO]	==== REPORT ====
+2024-11-03 12:10:53,486	[INFO]	Termination: step budget
+2024-11-03 12:10:53,486	[INFO]	Log file: /Users/han/Desktop/magpie_ssh_candidate_junit/ssh_candidate_junit/_magpie_logs/levenshtein_1730635801.log

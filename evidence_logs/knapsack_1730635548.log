@@ -1,0 +1,469 @@
+2024-11-03 12:05:48,541	[DEBUG]	==== CONFIG ====
+[magpie]
+import = 
+seed = 2994736967751973
+log_dir = _magpie_logs
+work_dir = _magpie_work
+local_original_copy = False
+local_original_name = __original__
+output_encoding = ascii
+edit_retries = 10
+default_timeout = 30
+default_lengthout = 1e5
+diff_method = unified
+trust_local_filesystem = True
+
+[magpie.log]
+color_output = True
+format_info = {counter:<7} {status:<20} {best}{fitness} ({ratio}) [{size}] {cached} {log}
+format_debug = patch({counter})="{patch}"{diffifbest}
+format_fitness = {:.2f}
+format_ratio = {:.2%%}
+format_patchif = 
+	 --> {patch}
+format_diffif = 
+	{diff}
+
+[software]
+path = java_programs/knapsack
+target_files = 
+	KNAPSACK.java.xml
+software = BasicSoftware
+model_rules = 
+	*.params : ParamFileConfigModel
+	*.xml : SrcmlModel
+	* : LineModel
+model_config = 
+	*.xml : [srcml]
+init_cmd = bash init_bug.sh
+init_timeout = 60
+init_lengthout = -1
+setup_cmd = 
+setup_timeout = 
+setup_lengthout = 
+compile_cmd = javac -cp junit-4.10.jar KNAPSACK.java KNAPSACK_TEST.java
+compile_timeout = 
+compile_lengthout = 
+test_cmd = java -cp junit-4.10.jar:. org.junit.runner.JUnitCore KNAPSACK_TEST
+test_timeout = 
+test_lengthout = 
+run_cmd = 
+run_timeout = 
+run_lengthout = 
+batch_timeout = 
+batch_lengthout = 
+batch_bin_fitness_strategy = aggregate
+batch_fitness_strategy = average
+fitness = repair
+
+[srcml]
+rename = 
+	stmt: break continue decl_stmt do expr_stmt for goto if return switch while
+	number: literal_number
+focus = block stmt operator_comp operator_arith number condition
+internodes = block
+process_pseudo_blocks = True
+process_literals = True
+process_operators = True
+
+[paramconfig]
+timing = test run
+cli_prefix = --
+cli_glue = =
+cli_boolean = show
+cli_boolean_prefix_true = 
+cli_boolean_prefix_false = no-
+cli_none = hide
+silent_prefix = @
+silent_suffix = $
+
+[search]
+protocol = BasicProtocol
+algorithm = GeneticProgrammingUniformConcat
+possible_edits = 
+	SrcmlNumericSetting
+	SrcmlComparisonOperatorSetting
+	SrcmlConditionReplacement
+warmup = 3
+warmup_strategy = last
+max_steps = 400
+max_time = 60
+target_fitness = 0
+cache_maxsize = 100
+cache_keep = 0.2
+batch_instances = 
+batch_shuffle = True
+batch_bin_shuffle = False
+batch_sample_size = 1
+
+[search.ls]
+delete_prob = 0.5
+max_neighbours = 
+when_trapped = continue
+accept_fail = False
+tabu_length = 10
+
+[search.gp]
+pop_size = 40
+delete_prob = 0.5
+offspring_elitism = 0.1
+offspring_crossover = 0.5
+offspring_mutation = 0.4
+uniform_rate = 0.5
+batch_reset = True
+
+[search.minify]
+do_cleanup = True
+do_rebuild = True
+do_simplify = True
+round_robin_limit = 3
+
+
+2024-11-03 12:05:48,542	[DEBUG]	
+2024-11-03 12:05:48,542	[INFO]	==== SEARCH: GeneticProgrammingUniformConcat ====
+2024-11-03 12:05:48,542	[INFO]	~~~~ WARMUP ~~~~
+2024-11-03 12:05:49,291	[INFO]	WARM    SUCCESS               60.00 (--) [0 edit(s)]  
+2024-11-03 12:05:50,008	[INFO]	WARM    SUCCESS               60.00 (--) [0 edit(s)]  
+2024-11-03 12:05:50,723	[INFO]	WARM    SUCCESS               60.00 (--) [0 edit(s)]  
+2024-11-03 12:05:50,723	[INFO]	REF     SUCCESS               60.00 (--) [0 edit(s)]  
+2024-11-03 12:05:50,723	[INFO]	
+2024-11-03 12:05:50,723	[INFO]	~~~~ START ~~~~
+2024-11-03 12:05:51,205	[INFO]	0-1     SUCCESS              +100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:05:51,205	[DEBUG]	patch(0-1)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '!=')"
+2024-11-03 12:05:51,675	[INFO]	0-2     SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:05:51,675	[DEBUG]	patch(0-2)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 0), '>')"
+2024-11-03 12:05:52,358	[INFO]	0-3     SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:05:52,358	[DEBUG]	patch(0-3)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 3))"
+2024-11-03 12:05:52,359	[INFO]	0-4     SUCCESS              +60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:05:52,359	[DEBUG]	patch(0-4)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 7), '1')"
+2024-11-03 12:05:52,834	[INFO]	0-5     SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:05:52,834	[DEBUG]	patch(0-5)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '>')"
+2024-11-03 12:05:53,568	[INFO]	0-6     SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:05:53,568	[DEBUG]	patch(0-6)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 15), '0')"
+2024-11-03 12:05:54,281	[INFO]	0-7     SUCCESS               60.00 (100.00%) [1 edit(s)]  
+2024-11-03 12:05:54,281	[DEBUG]	patch(0-7)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1')"
+2024-11-03 12:05:54,282	[INFO]	0-8     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:05:54,282	[DEBUG]	patch(0-8)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '==')"
+2024-11-03 12:05:54,757	[INFO]	0-9     SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:05:54,758	[DEBUG]	patch(0-9)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 1), '!=')"
+2024-11-03 12:05:55,482	[INFO]	0-10    SUCCESS               60.00 (100.00%) [1 edit(s)]  
+2024-11-03 12:05:55,483	[DEBUG]	patch(0-10)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 13), '1')"
+2024-11-03 12:05:55,483	[INFO]	0-11    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:05:55,483	[DEBUG]	patch(0-11)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 3), ('KNAPSACK.java.xml', 'condition', 3))"
+2024-11-03 12:05:55,483	[INFO]	0-12    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:05:55,483	[DEBUG]	patch(0-12)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 1), '>=')"
+2024-11-03 12:05:55,735	[INFO]	0-13    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:05:55,735	[DEBUG]	patch(0-13)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 0))"
+2024-11-03 12:05:56,456	[INFO]	0-14    SUCCESS               60.00 (100.00%) [1 edit(s)]  
+2024-11-03 12:05:56,456	[DEBUG]	patch(0-14)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 1), '1')"
+2024-11-03 12:05:57,067	[INFO]	0-15    SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:05:57,067	[DEBUG]	patch(0-15)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 4), '>=')"
+2024-11-03 12:05:57,319	[INFO]	0-16    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:05:57,319	[DEBUG]	patch(0-16)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 3), ('KNAPSACK.java.xml', 'condition', 2))"
+2024-11-03 12:05:58,051	[INFO]	0-17    SUCCESS               60.00 (100.00%) [1 edit(s)]  
+2024-11-03 12:05:58,051	[DEBUG]	patch(0-17)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 4), '<')"
+2024-11-03 12:05:58,051	[INFO]	0-18    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:05:58,052	[DEBUG]	patch(0-18)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 12), '0')"
+2024-11-03 12:05:58,789	[INFO]	0-19    SUCCESS               90.00 (150.00%) [1 edit(s)]  
+2024-11-03 12:05:58,789	[DEBUG]	patch(0-19)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 1), '==')"
+2024-11-03 12:05:59,302	[INFO]	0-20    SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:05:59,303	[DEBUG]	patch(0-20)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 0), '==')"
+2024-11-03 12:05:59,778	[INFO]	0-21    SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:05:59,779	[DEBUG]	patch(0-21)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 1), '<=')"
+2024-11-03 12:05:59,779	[INFO]	0-22    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:05:59,779	[DEBUG]	patch(0-22)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 15), '1')"
+2024-11-03 12:06:00,033	[INFO]	0-23    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:06:00,033	[DEBUG]	patch(0-23)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 0))"
+2024-11-03 12:06:00,517	[INFO]	0-24    SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:06:00,517	[DEBUG]	patch(0-24)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '>=')"
+2024-11-03 12:06:01,004	[INFO]	0-25    SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:06:01,004	[DEBUG]	patch(0-25)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:01,004	[INFO]	0-26    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:01,004	[DEBUG]	patch(0-26)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:01,254	[INFO]	0-27    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:06:01,254	[DEBUG]	patch(0-27)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 3), ('KNAPSACK.java.xml', 'condition', 0))"
+2024-11-03 12:06:01,508	[INFO]	0-28    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:06:01,508	[DEBUG]	patch(0-28)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 2))"
+2024-11-03 12:06:01,997	[INFO]	0-29    SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:06:01,997	[DEBUG]	patch(0-29)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 0), '>=')"
+2024-11-03 12:06:01,998	[INFO]	0-30    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:01,998	[DEBUG]	patch(0-30)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 2), '<=')"
+2024-11-03 12:06:02,737	[INFO]	0-31    SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:06:02,737	[DEBUG]	patch(0-31)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 2), '!=')"
+2024-11-03 12:06:02,738	[INFO]	0-32    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:02,738	[DEBUG]	patch(0-32)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 16), '1')"
+2024-11-03 12:06:03,468	[INFO]	0-33    SUCCESS               60.00 (100.00%) [1 edit(s)]  
+2024-11-03 12:06:03,468	[DEBUG]	patch(0-33)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '<=')"
+2024-11-03 12:06:04,156	[INFO]	0-34    SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:06:04,156	[DEBUG]	patch(0-34)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '==')"
+2024-11-03 12:06:04,157	[INFO]	0-35    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:04,157	[DEBUG]	patch(0-35)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '0')"
+2024-11-03 12:06:04,634	[INFO]	0-36    SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:06:04,634	[DEBUG]	patch(0-36)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '!=')"
+2024-11-03 12:06:05,121	[INFO]	0-37    SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:06:05,121	[DEBUG]	patch(0-37)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 2), '==')"
+2024-11-03 12:06:05,121	[INFO]	0-38    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:05,121	[DEBUG]	patch(0-38)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4))"
+2024-11-03 12:06:05,847	[INFO]	0-39    SUCCESS               80.00 (133.33%) [1 edit(s)]  
+2024-11-03 12:06:05,848	[DEBUG]	patch(0-39)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 6), '1')"
+2024-11-03 12:06:06,330	[INFO]	0-40    SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:06:06,330	[DEBUG]	patch(0-40)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '>')"
+2024-11-03 12:06:06,331	[INFO]	REF     SUCCESS               60.00 (--) [0 edit(s)] [cached] 
+2024-11-03 12:06:06,332	[INFO]	1-1     SUCCESS              +60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,332	[DEBUG]	patch(1-1)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '0')"
+2024-11-03 12:06:06,333	[INFO]	1-2     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,333	[DEBUG]	patch(1-2)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4))"
+2024-11-03 12:06:06,333	[INFO]	1-3     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,333	[DEBUG]	patch(1-3)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1')"
+2024-11-03 12:06:06,333	[INFO]	1-4     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,333	[DEBUG]	patch(1-4)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 12), '0')"
+2024-11-03 12:06:06,333	[INFO]	1-5     SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:06,333	[DEBUG]	patch(1-5)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '0')"
+2024-11-03 12:06:06,334	[INFO]	1-6     SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:06,334	[DEBUG]	patch(1-6)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 3), ('KNAPSACK.java.xml', 'condition', 3))"
+2024-11-03 12:06:06,334	[INFO]	1-7     SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:06,334	[DEBUG]	patch(1-7)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1)) | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1')"
+2024-11-03 12:06:06,334	[INFO]	1-8     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,334	[DEBUG]	patch(1-8)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 16), '1')"
+2024-11-03 12:06:06,334	[INFO]	1-9     SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:06,334	[DEBUG]	patch(1-9)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 2), '<=') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 1), '>=')"
+2024-11-03 12:06:06,805	[INFO]	1-10    SUCCESS               100.00 (166.67%) [2 edit(s)]  
+2024-11-03 12:06:06,806	[DEBUG]	patch(1-10)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '!=') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 13), '1')"
+2024-11-03 12:06:06,806	[INFO]	1-11    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,806	[DEBUG]	patch(1-11)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 16), '1')"
+2024-11-03 12:06:06,806	[INFO]	1-12    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,806	[DEBUG]	patch(1-12)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 1), '>=')"
+2024-11-03 12:06:06,806	[INFO]	1-13    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,807	[DEBUG]	patch(1-13)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 1), '1')"
+2024-11-03 12:06:06,807	[INFO]	1-14    SUCCESS               100.00 (166.67%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,807	[DEBUG]	patch(1-14)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 0), '>')"
+2024-11-03 12:06:06,807	[INFO]	1-15    SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:06,807	[DEBUG]	patch(1-15)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '<=') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 16), '1')"
+2024-11-03 12:06:06,807	[INFO]	1-16    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,807	[DEBUG]	patch(1-16)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:06,808	[INFO]	1-17    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,808	[DEBUG]	patch(1-17)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:06,808	[INFO]	1-18    SUCCESS               100.00 (166.67%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,808	[DEBUG]	patch(1-18)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 4), '>=')"
+2024-11-03 12:06:06,808	[INFO]	1-19    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,808	[DEBUG]	patch(1-19)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 15), '1')"
+2024-11-03 12:06:06,808	[INFO]	1-20    SUCCESS               100.00 (166.67%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,808	[DEBUG]	patch(1-20)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '>')"
+2024-11-03 12:06:06,808	[INFO]	1-21    SUCCESS               80.00 (133.33%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,808	[DEBUG]	patch(1-21)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 6), '1')"
+2024-11-03 12:06:06,809	[INFO]	1-22    SUCCESS               100.00 (166.67%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,809	[DEBUG]	patch(1-22)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 1), '<=')"
+2024-11-03 12:06:06,809	[INFO]	1-23    SUCCESS               100.00 (166.67%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,809	[DEBUG]	patch(1-23)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 0), '>')"
+2024-11-03 12:06:06,809	[INFO]	1-24    SUCCESS               100.00 (166.67%) [1 edit(s)] [cached] 
+2024-11-03 12:06:06,809	[DEBUG]	patch(1-24)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 0), '==')"
+2024-11-03 12:06:06,809	[INFO]	1-25    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:06,809	[DEBUG]	patch(1-25)=""
+2024-11-03 12:06:06,810	[INFO]	1-26    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:06,810	[DEBUG]	patch(1-26)=""
+2024-11-03 12:06:06,810	[INFO]	1-27    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:06,810	[DEBUG]	patch(1-27)=""
+2024-11-03 12:06:07,061	[INFO]	1-28    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:06:07,062	[DEBUG]	patch(1-28)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 12), '0') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 0), ('KNAPSACK.java.xml', 'condition', 3))"
+2024-11-03 12:06:07,062	[INFO]	1-29    SUCCESS               90.00 (150.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:07,062	[DEBUG]	patch(1-29)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 2), '<=') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 1), '==')"
+2024-11-03 12:06:07,062	[INFO]	1-30    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:07,062	[DEBUG]	patch(1-30)=""
+2024-11-03 12:06:07,062	[INFO]	1-31    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:07,062	[DEBUG]	patch(1-31)=""
+2024-11-03 12:06:07,063	[INFO]	1-32    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:07,063	[DEBUG]	patch(1-32)=""
+2024-11-03 12:06:07,063	[INFO]	1-33    SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:07,063	[DEBUG]	patch(1-33)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 1), '1') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:07,779	[INFO]	1-34    SUCCESS               60.00 (100.00%) [2 edit(s)]  
+2024-11-03 12:06:07,779	[DEBUG]	patch(1-34)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 15), '1') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 4), '<=')"
+2024-11-03 12:06:08,277	[INFO]	1-35    SUCCESS               100.00 (166.67%) [2 edit(s)]  
+2024-11-03 12:06:08,277	[DEBUG]	patch(1-35)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '<=') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 2), '==')"
+2024-11-03 12:06:08,277	[INFO]	1-36    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:08,277	[DEBUG]	patch(1-36)=""
+2024-11-03 12:06:08,277	[INFO]	1-37    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:08,277	[DEBUG]	patch(1-37)=""
+2024-11-03 12:06:08,559	[INFO]	1-38    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:06:08,559	[DEBUG]	patch(1-38)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '==') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 2), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:08,560	[INFO]	1-39    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:08,560	[DEBUG]	patch(1-39)=""
+2024-11-03 12:06:08,560	[INFO]	1-40    SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:08,560	[DEBUG]	patch(1-40)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 4), '<') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 2), ('KNAPSACK.java.xml', 'condition', 2))"
+2024-11-03 12:06:08,560	[INFO]	REF     SUCCESS               60.00 (--) [0 edit(s)] [cached] 
+2024-11-03 12:06:08,562	[INFO]	2-1     SUCCESS              +60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:08,562	[DEBUG]	patch(2-1)=""
+2024-11-03 12:06:08,562	[INFO]	2-2     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:08,562	[DEBUG]	patch(2-2)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '0')"
+2024-11-03 12:06:08,563	[INFO]	2-3     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:08,563	[DEBUG]	patch(2-3)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4))"
+2024-11-03 12:06:08,563	[INFO]	2-4     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:08,563	[DEBUG]	patch(2-4)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1')"
+2024-11-03 12:06:08,563	[INFO]	2-5     SUCCESS               100.00 (166.67%) [1 edit(s)] [cached] 
+2024-11-03 12:06:08,563	[DEBUG]	patch(2-5)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '>')"
+2024-11-03 12:06:08,563	[INFO]	2-6     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:08,563	[DEBUG]	patch(2-6)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '0')"
+2024-11-03 12:06:08,563	[INFO]	2-7     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:08,563	[DEBUG]	patch(2-7)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4))"
+2024-11-03 12:06:08,564	[INFO]	2-8     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:08,564	[DEBUG]	patch(2-8)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1')"
+2024-11-03 12:06:08,564	[INFO]	2-9     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:08,564	[DEBUG]	patch(2-9)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 16), '1')"
+2024-11-03 12:06:08,564	[INFO]	2-10    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:08,564	[DEBUG]	patch(2-10)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 12), '0')"
+2024-11-03 12:06:08,564	[INFO]	2-11    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:08,564	[DEBUG]	patch(2-11)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1')"
+2024-11-03 12:06:09,040	[INFO]	2-12    SUCCESS               100.00 (166.67%) [3 edit(s)]  
+2024-11-03 12:06:09,041	[DEBUG]	patch(2-12)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 1), '1') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '<=') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 2), '==')"
+2024-11-03 12:06:09,041	[INFO]	2-13    SUCCESS               100.00 (166.67%) [2 edit(s)] [cached] 
+2024-11-03 12:06:09,041	[DEBUG]	patch(2-13)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 4), '>=') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 16), '1')"
+2024-11-03 12:06:09,041	[INFO]	2-14    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:09,041	[DEBUG]	patch(2-14)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 16), '1')"
+2024-11-03 12:06:09,041	[INFO]	2-15    SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:09,041	[DEBUG]	patch(2-15)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1)) | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1')"
+2024-11-03 12:06:09,042	[INFO]	2-16    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:09,042	[DEBUG]	patch(2-16)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 1), '1')"
+2024-11-03 12:06:09,042	[INFO]	2-17    SUCCESS               100.00 (166.67%) [3 edit(s)] [cached] 
+2024-11-03 12:06:09,042	[DEBUG]	patch(2-17)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 2), '<=') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 1), '>=') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '>')"
+2024-11-03 12:06:09,042	[INFO]	2-18    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:09,042	[DEBUG]	patch(2-18)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 2), ('KNAPSACK.java.xml', 'condition', 2))"
+2024-11-03 12:06:09,042	[INFO]	2-19    SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:09,043	[DEBUG]	patch(2-19)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 15), '1') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:09,043	[INFO]	2-20    SUCCESS               60.00 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:06:09,043	[DEBUG]	patch(2-20)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 15), '1') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 3), ('KNAPSACK.java.xml', 'condition', 3))"
+2024-11-03 12:06:09,043	[INFO]	2-21    SUCCESS               100.00 (166.67%) [1 edit(s)] [cached] 
+2024-11-03 12:06:09,043	[DEBUG]	patch(2-21)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '!=')"
+2024-11-03 12:06:09,043	[INFO]	2-22    SUCCESS               100.00 (166.67%) [4 edit(s)] [cached] 
+2024-11-03 12:06:09,043	[DEBUG]	patch(2-22)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '<=') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 2), '==') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '0')"
+2024-11-03 12:06:09,756	[INFO]	2-23    SUCCESS               80.00 (133.33%) [2 edit(s)]  
+2024-11-03 12:06:09,756	[DEBUG]	patch(2-23)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 6), '1') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1')"
+2024-11-03 12:06:09,757	[INFO]	2-24    SUCCESS               90.00 (150.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:09,757	[DEBUG]	patch(2-24)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 1), '==')"
+2024-11-03 12:06:10,234	[INFO]	2-25    SUCCESS               100.00 (166.67%) [1 edit(s)]  
+2024-11-03 12:06:10,235	[DEBUG]	patch(2-25)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '<')"
+2024-11-03 12:06:10,235	[INFO]	2-26    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:10,235	[DEBUG]	patch(2-26)=""
+2024-11-03 12:06:10,235	[INFO]	2-27    SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:10,235	[DEBUG]	patch(2-27)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4))"
+2024-11-03 12:06:10,923	[INFO]	2-28    SUCCESS               100.00 (166.67%) [2 edit(s)]  
+2024-11-03 12:06:10,923	[DEBUG]	patch(2-28)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 2), '0')"
+2024-11-03 12:06:10,923	[INFO]	2-29    SUCCESS               60.00 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:06:10,923	[DEBUG]	patch(2-29)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '<=') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 16), '1') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 13), '0')"
+2024-11-03 12:06:10,924	[INFO]	2-30    SUCCESS               100.00 (166.67%) [2 edit(s)] [cached] 
+2024-11-03 12:06:10,924	[DEBUG]	patch(2-30)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 12), '0') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '>')"
+2024-11-03 12:06:10,924	[INFO]	2-31    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:10,924	[DEBUG]	patch(2-31)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:10,924	[INFO]	2-32    SUCCESS               60.00 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:06:10,924	[DEBUG]	patch(2-32)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 1), '1') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:10,925	[INFO]	2-33    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:10,925	[DEBUG]	patch(2-33)=""
+2024-11-03 12:06:10,925	[INFO]	2-34    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:10,925	[DEBUG]	patch(2-34)=""
+2024-11-03 12:06:11,409	[INFO]	2-35    SUCCESS               100.00 (166.67%) [2 edit(s)]  
+2024-11-03 12:06:11,409	[DEBUG]	patch(2-35)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 1), '1') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:11,662	[INFO]	2-36    COMPILE_CODE_ERROR    None (--) [3 edit(s)]  
+2024-11-03 12:06:11,663	[DEBUG]	patch(2-36)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 15), '1') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 4), '<=') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 0), ('KNAPSACK.java.xml', 'condition', 3))"
+2024-11-03 12:06:11,663	[INFO]	2-37    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:11,663	[DEBUG]	patch(2-37)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 2), '<=')"
+2024-11-03 12:06:11,663	[INFO]	2-38    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:11,663	[DEBUG]	patch(2-38)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 2), ('KNAPSACK.java.xml', 'condition', 2))"
+2024-11-03 12:06:11,663	[INFO]	2-39    SUCCESS               60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:11,663	[DEBUG]	patch(2-39)=""
+2024-11-03 12:06:12,138	[INFO]	2-40    SUCCESS               100.00 (166.67%) [3 edit(s)]  
+2024-11-03 12:06:12,138	[DEBUG]	patch(2-40)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 3), ('KNAPSACK.java.xml', 'condition', 3)) | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 5), '-1')"
+2024-11-03 12:06:12,139	[INFO]	REF     SUCCESS               60.00 (--) [0 edit(s)] [cached] 
+2024-11-03 12:06:12,141	[INFO]	3-1     SUCCESS              +60.00 (100.00%) [0 edit(s)] [cached] 
+2024-11-03 12:06:12,141	[DEBUG]	patch(3-1)=""
+2024-11-03 12:06:12,141	[INFO]	3-2     SUCCESS               60.00 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:06:12,141	[DEBUG]	patch(3-2)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 15), '1') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 3), ('KNAPSACK.java.xml', 'condition', 3))"
+2024-11-03 12:06:12,141	[INFO]	3-3     SUCCESS               60.00 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:06:12,141	[DEBUG]	patch(3-3)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 1), '1') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:12,142	[INFO]	3-4     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:12,142	[DEBUG]	patch(3-4)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '0')"
+2024-11-03 12:06:12,142	[INFO]	3-5     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:12,142	[DEBUG]	patch(3-5)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '0')"
+2024-11-03 12:06:12,142	[INFO]	3-6     SUCCESS               60.00 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:06:12,142	[DEBUG]	patch(3-6)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 3), ('KNAPSACK.java.xml', 'condition', 3)) | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1')"
+2024-11-03 12:06:12,143	[INFO]	3-7     SUCCESS               60.00 (100.00%) [3 edit(s)] [cached] 
+2024-11-03 12:06:12,143	[DEBUG]	patch(3-7)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 1), '1') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:12,143	[INFO]	3-8     SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:12,143	[DEBUG]	patch(3-8)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '0')"
+2024-11-03 12:06:12,143	[INFO]	3-9     SUCCESS               100.00 (166.67%) [1 edit(s)] [cached] 
+2024-11-03 12:06:12,143	[DEBUG]	patch(3-9)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 4), '>=')"
+2024-11-03 12:06:12,143	[INFO]	3-10    SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:12,143	[DEBUG]	patch(3-10)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 15), '1') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 3), ('KNAPSACK.java.xml', 'condition', 3))"
+2024-11-03 12:06:12,144	[INFO]	3-11    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:12,144	[DEBUG]	patch(3-11)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 2), ('KNAPSACK.java.xml', 'condition', 2))"
+2024-11-03 12:06:12,144	[INFO]	3-12    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:12,144	[DEBUG]	patch(3-12)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1')"
+2024-11-03 12:06:12,144	[INFO]	3-13    SUCCESS               100.00 (166.67%) [1 edit(s)] [cached] 
+2024-11-03 12:06:12,144	[DEBUG]	patch(3-13)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 3), '>')"
+2024-11-03 12:06:12,145	[INFO]	3-14    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:12,145	[DEBUG]	patch(3-14)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4))"
+2024-11-03 12:06:12,145	[INFO]	3-15    SUCCESS               100.00 (166.67%) [3 edit(s)] [cached] 
+2024-11-03 12:06:12,145	[DEBUG]	patch(3-15)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 16), '1') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 13), '0') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:12,145	[INFO]	3-16    SUCCESS               100.00 (166.67%) [3 edit(s)] [cached] 
+2024-11-03 12:06:12,146	[DEBUG]	patch(3-16)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 3), ('KNAPSACK.java.xml', 'condition', 3)) | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 5), '-1')"
+2024-11-03 12:06:12,146	[INFO]	3-17    SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:12,146	[DEBUG]	patch(3-17)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1)) | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 1), '1')"
+2024-11-03 12:06:12,146	[INFO]	3-18    SUCCESS               100.00 (166.67%) [1 edit(s)] [cached] 
+2024-11-03 12:06:12,146	[DEBUG]	patch(3-18)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '>')"
+2024-11-03 12:06:12,146	[INFO]	3-19    SUCCESS               60.00 (100.00%) [2 edit(s)] [cached] 
+2024-11-03 12:06:12,146	[DEBUG]	patch(3-19)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4))"
+2024-11-03 12:06:12,147	[INFO]	3-20    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:12,147	[DEBUG]	patch(3-20)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:12,147	[INFO]	3-21    SUCCESS               80.00 (133.33%) [3 edit(s)] [cached] 
+2024-11-03 12:06:12,147	[DEBUG]	patch(3-21)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 6), '1') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1') | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 12), '0')"
+2024-11-03 12:06:12,147	[INFO]	3-22    SUCCESS               60.00 (100.00%) [1 edit(s)] [cached] 
+2024-11-03 12:06:12,147	[DEBUG]	patch(3-22)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1))"
+2024-11-03 12:06:12,618	[INFO]	3-23    SUCCESS               100.00 (166.67%) [3 edit(s)]  
+2024-11-03 12:06:12,618	[DEBUG]	patch(3-23)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1)) | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '1') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '>')"
+2024-11-03 12:06:12,618	[INFO]	3-24    SUCCESS               100.00 (166.67%) [5 edit(s)] [cached] 
+2024-11-03 12:06:12,618	[DEBUG]	patch(3-24)="SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 2), '<=') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 1), '>=') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 2), '<=') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 1), '>=') | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '>')"
+2024-11-03 12:06:12,915	[INFO]	3-25    COMPILE_CODE_ERROR    None (--) [1 edit(s)]  
+2024-11-03 12:06:12,915	[DEBUG]	patch(3-25)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 0), ('KNAPSACK.java.xml', 'condition', 2))"
+2024-11-03 12:06:13,558	[INFO]	3-26    SUCCESS               100.00 (166.67%) [4 edit(s)]  
+2024-11-03 12:06:13,558	[DEBUG]	patch(3-26)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 15), '1') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 3), ('KNAPSACK.java.xml', 'condition', 3)) | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 4), '!=')"
+2024-11-03 12:06:13,559	[INFO]	3-27    SUCCESS               60.00 (100.00%) [4 edit(s)] [cached] 
+2024-11-03 12:06:13,559	[DEBUG]	patch(3-27)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 1), '1') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1)) | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 1)) | SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 7), '1')"
+2024-11-03 12:06:13,858	[INFO]	3-28    COMPILE_CODE_ERROR    None (--) [2 edit(s)]  
+2024-11-03 12:06:13,858	[DEBUG]	patch(3-28)="SrcmlNumericSetting(('KNAPSACK.java.xml', 'number', 4), '0') | SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 1), ('KNAPSACK.java.xml', 'condition', 4))"
+2024-11-03 12:06:14,587	[INFO]	3-29    SUCCESS              *0.00 (0.00%) [2 edit(s)]  
+2024-11-03 12:06:14,587	[DEBUG]	patch(3-29)="SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4)) | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '<=')"
+--- before: KNAPSACK.java
++++ after: KNAPSACK.java
+@@ -26,7 +26,7 @@
+                 if (i == 0 || j == 0) {
+                     memo[i][j] = 0;
+                 }
+-                else if (weight < j) {
++                else if (weight <= j) {
+                     memo[i][j] = Math.max(memo[i - 1][j], value + memo[i - 1][j - weight]);
+                 }
+                 else {
+
+2024-11-03 12:06:14,588	[INFO]	~~~~ END ~~~~
+2024-11-03 12:06:14,588	[INFO]	
+2024-11-03 12:06:14,588	[INFO]	==== REPORT ====
+2024-11-03 12:06:14,588	[INFO]	Termination: target fitness reached
+2024-11-03 12:06:14,588	[INFO]	Log file: /Users/han/Desktop/magpie_ssh_candidate_junit/ssh_candidate_junit/_magpie_logs/knapsack_1730635548.log
+2024-11-03 12:06:14,588	[INFO]	Patch file: _magpie_logs/knapsack_1730635548.patch
+2024-11-03 12:06:14,588	[INFO]	Diff file: _magpie_logs/knapsack_1730635548.diff
+2024-11-03 12:06:14,588	[INFO]	Reference fitness: 60.00
+2024-11-03 12:06:14,588	[INFO]	Best fitness: 0.00
+2024-11-03 12:06:14,588	[INFO]	
+2024-11-03 12:06:14,589	[INFO]	==== BEST PATCH ====
+SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4)) | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '<=')
+2024-11-03 12:06:14,589	[INFO]	
+2024-11-03 12:06:14,589	[INFO]	==== DIFF ====
+[1m--- before: KNAPSACK.java[0m
+[1m+++ after: KNAPSACK.java[0m
+[36m@@ -26,7 +26,7 @@[0m
+                 if (i == 0 || j == 0) {
+                     memo[i][j] = 0;
+                 }
+[31m-                else if (weight < j) {[0m
+[32m+                else if (weight <= j) {[0m
+                     memo[i][j] = Math.max(memo[i - 1][j], value + memo[i - 1][j - weight]);
+                 }
+                 else {
+

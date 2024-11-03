@@ -1,0 +1,11 @@
+--- RPN_EVAL.java	2024-11-03 10:26:42
++++ RPN_EVALBug.java	2024-11-03 10:27:35
+@@ -30,7 +30,7 @@
+                 Double b = (Double) stack.pop();
+                 Double c = 0.0;
+                 BinaryOperator<Double> bin_op = op.get(token);
+-                c = bin_op.apply(b,a);
++                c = bin_op.apply(a,b);
+                 stack.push(c);
+             }
+         }

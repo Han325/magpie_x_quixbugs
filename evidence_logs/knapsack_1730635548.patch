@@ -1,0 +1,1 @@
+SrcmlConditionReplacement(('KNAPSACK.java.xml', 'condition', 4), ('KNAPSACK.java.xml', 'condition', 4)) | SrcmlComparisonOperatorSetting(('KNAPSACK.java.xml', 'operator_comp', 5), '<=')

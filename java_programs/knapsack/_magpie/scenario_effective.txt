@@ -1,0 +1,29 @@
+[magpie]
+default_lengthout = 1e5
+
+[software]
+path = java_programs/knapsack
+target_files =
+    KNAPSACK.java.xml
+fitness = repair
+model_config =
+     *.xml : [srcml]
+init_cmd = bash init_bug.sh
+compile_cmd = javac -cp junit-4.10.jar KNAPSACK.java KNAPSACK_TEST.java
+test_cmd = java -cp junit-4.10.jar:. org.junit.runner.JUnitCore KNAPSACK_TEST
+batch_fitness_strategy = average
+
+[search]
+target_fitness = 0
+max_steps = 400
+max_time = 60
+possible_edits =
+    SrcmlNumericSetting
+    SrcmlComparisonOperatorSetting
+    SrcmlConditionReplacement
+
+[search.gp]
+pop_size = 40
+
+[srcml]
+focus = block stmt operator_comp operator_arith number condition
