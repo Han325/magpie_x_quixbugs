@@ -62,14 +62,14 @@ The `java_programs` directory contains the bugs and files that are needed for MA
 	│ ├── MERGESORT.java 
 	│ └── MERGESORT_TEST.java 
 	└── rpn_eval/ 
-	│	├── _magpie/ 
-	│	│ ├── RPN_EVALBug.diff 
-	│	│ ├── RPN_EVALBug.java.xml 
-	│	│ └── scenario_bug.txt 
-	│	├── junit-4.10.jar 
-	│	├── init_bug.sh 
-	│	├── RPN_EVAL.java 
-	│	└── RPN_EVAL_TEST.java
+		├── _magpie/ 
+		│ ├── RPN_EVALBug.diff 
+		│ ├── RPN_EVALBug.java.xml 
+		│ └── scenario_bug.txt 
+		├── junit-4.10.jar 
+		├── init_bug.sh 
+		├── RPN_EVAL.java 
+		└── RPN_EVAL_TEST.java
 
 ```
 
