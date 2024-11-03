@@ -86,7 +86,6 @@ The structure will look like this:
 .
 
 ├── java_programs
-
 └── magpie
 
 ```
