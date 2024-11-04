@@ -2,7 +2,7 @@
 default_lengthout = 1e5
 
 [software]
-path = java_programs/LEVENSHTEIN
+path = java_programs/levenshtein
 target_files =
     LEVENSHTEIN.java.xml
 fitness = repair
