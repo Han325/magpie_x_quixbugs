@@ -1,0 +1,11 @@
+--- DETECT_CYCLE.java	2024-11-05 08:06:47
++++ DETECT_CYCLEBug.java	2024-11-05 08:06:29
+@@ -15,7 +15,7 @@
+         Node tortoise = node;
+ 
+         while (true) {
+-            if (null==hare || hare.getSuccessor() == null)
++            if (hare.getSuccessor() == null)
+                 return false;
+ 
+             tortoise = tortoise.getSuccessor();

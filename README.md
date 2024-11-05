@@ -18,6 +18,8 @@ Hi! This will be the instructions that you need to follow to get the demo of MAG
 
 - magpie source code directory (under master_legacy branch)
 
+- macOS/Linux 
+
   **Tip**: Do have a read on MAGPIE's documentation before you proceed, link to the docs is here: [MAGPIE DOCS](https://github.com/bloa/magpie/tree/master/docs), have a read on the project structure and scenario file documentation.
 
 # Project Structure
@@ -31,12 +33,21 @@ The `java_programs` directory contains the bugs and files that are needed for MA
 . 
 ├── evidence_logs 
 └── java_programs/ 
+	├── detect_cycle/ 
+	│ ├── _magpie/ 
+	│ │ ├── DETECT_CYCLEBug.diff 
+	│ │ ├── DETECT_CYCLEBug.java.xml 
+	│ │ └── scenario_bug.txt  
+	│ ├── junit-4.10.jar 
+	│ ├── init_bug.sh 
+	│ ├── DETECT_CYCLE.java 
+	│ └── DETECT_CYCLE_TEST.java 
 	├── knapsack/ 
 	│ ├── _magpie/ 
 	│ │ ├── KNAPSACKBug.diff 
 	│ │ ├── KNAPSACKBug.java.xml 
-	│ │ ├── scenario_bug.txt │ 
-	│ └── scenario_effective.txt 
+	│ │ ├── scenario_bug.txt  
+	│ │	└── scenario_effective.txt 
 	│ ├── junit-4.10.jar 
 	│ ├── init_bug.sh 
 	│ ├── KNAPSACK.java 
@@ -51,8 +62,8 @@ The `java_programs` directory contains the bugs and files that are needed for MA
 	│ ├── init_bug.sh 
 	│ ├── LEVENSHTEIN.java 
 	│ └── LEVENSHTEIN_TEST.java 
-	├── mergesort/ │ 
-	├── _magpie/ 
+	├── mergesort/  
+	│ ├── _magpie/ 
 	│ │ ├── MERGESORTBug.diff 
 	│ │ ├── MERGESORTBug.java.xml 
 	│ │ ├── scenario_bug.txt 
@@ -61,15 +72,15 @@ The `java_programs` directory contains the bugs and files that are needed for MA
 	│ ├── init_bug.sh 
 	│ ├── MERGESORT.java 
 	│ └── MERGESORT_TEST.java 
-	└── rpn_eval/ 
-		├── _magpie/ 
-		│ ├── RPN_EVALBug.diff 
-		│ ├── RPN_EVALBug.java.xml 
-		│ └── scenario_bug.txt 
-		├── junit-4.10.jar 
-		├── init_bug.sh 
-		├── RPN_EVAL.java 
-		└── RPN_EVAL_TEST.java
+	├── rpn_eval/ 
+	│ ├── _magpie/ 
+	│ │ ├── RPN_EVALBug.diff 
+	│ │ ├── RPN_EVALBug.java.xml 
+	│ │ └── scenario_bug.txt 
+	│ ├── junit-4.10.jar 
+	│ ├── init_bug.sh 
+	│ ├── RPN_EVAL.java 
+	│ └── RPN_EVAL_TEST.java
 
 ```
 
